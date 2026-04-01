@@ -1,0 +1,55 @@
+{
+  "website": {
+    "name": "Les Vacances d'Agadir",
+    "title": "Les Vacances d'Agadir - Location de vacances à Agadir",
+    "description": "Découvrez les meilleures propriétés de vacances à Agadir. Locations courtes et longues durées dans un cadre exceptionnel.",
+    "logo": "/assets/logo-footer.png"
+  },
+  "contact": {
+    "email": "contact@lesvacanceagadir.com",
+    "phone": "+212 5 55 55 55 55",
+    "whatsapp": "+212 6 66 66 66 66",
+    "address": {
+      "city": "Agadir",
+      "country": "Maroc",
+      "full": "Agadir, Maroc",
+      "detailed": "Avenue Hassan II, Agadir, Maroc"
+    },
+    "coordinates": {
+      "latitude": 30.4278,
+      "longitude": -9.5981
+    }
+  },
+  "socialMedia": {
+    "facebook": {
+      "handle": "@lesvacancesagadir",
+      "url": "https://facebook.com/lesvacancesagadir"
+    },
+    "instagram": {
+      "handle": "@lesvacancesagadir",
+      "url": "https://instagram.com/lesvacancesagadir"
+    },
+    "tiktok": {
+      "handle": "@lesvacancesagadir",
+      "url": "https://tiktok.com/@lesvacancesagadir"
+    },
+    "whatsapp": {
+      "url": "https://wa.me/212666666666"
+    }
+  },
+  "businessHours": {
+    "weekdays": "9h-18h",
+    "weekend": "10h-16h",
+    "sunday": "Fermé"
+  },
+  "company": {
+    "established": "2020",
+    "description": "Votre partenaire de confiance pour l'immobilier de prestige à Agadir. Découvrez des propriétés exceptionnelles.",
+    "stats": {
+      "clients": "10,000+",
+      "properties": "5,000+",
+      "rating": "4.9/5",
+      "responseTime": "< 2h"
+    }
+  }
+}

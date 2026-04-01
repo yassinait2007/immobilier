@@ -1,0 +1,1 @@
+export { useFavoritesData } from './useFavoritesData';

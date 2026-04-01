@@ -1,0 +1,194 @@
+@font-face {
+  font-family: "font-awesome";
+  src: url("/src/assets/fonts/AdFeatures.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base styles for all icons */
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "font-awesome" !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: inherit;
+  text-align: center;
+
+  /* Better Font Rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Icon definitions */
+.icon-plot-area:before {
+  content: "\e94d";
+}
+.icon-size:before {
+  content: "\e94e";
+}
+.icon-area:before {
+  content: "\e94f";
+}
+.icon-floors:before {
+  content: "\e94a";
+}
+.icon-land-group:before {
+  content: "\e94b";
+}
+.icon-land-type:before {
+  content: "\e94c";
+}
+.icon-cellar:before {
+  content: "\e949";
+}
+.icon-medal:before {
+  content: "\e948";
+}
+.icon-crane:before {
+  content: "\e918";
+}
+.icon-internet:before {
+  content: "\e919";
+}
+.icon-tv:before {
+  content: "\e91a";
+}
+.icon-animals:before {
+  content: "\e91b";
+}
+.icon-pool:before {
+  content: "\e91c";
+}
+.icon-storageRoom:before {
+  content: "\e91d";
+}
+.icon-heating:before {
+  content: "\e91e";
+}
+.icon-moroccanLounge:before {
+  content: "\e91f";
+}
+.icon-europeanLounge:before {
+  content: "\e920";
+}
+.icon-garage:before {
+  content: "\e921";
+}
+.icon-fridge:before {
+  content: "\e922";
+}
+.icon-doubleGlazing:before {
+  content: "\e923";
+}
+.icon-terrace:before {
+  content: "\e924";
+}
+.icon-fullKitchen:before {
+  content: "\e925";
+}
+.icon-reinforcedDoor:before {
+  content: "\e926";
+}
+.icon-washer:before {
+  content: "\e927";
+}
+.icon-microwave:before {
+  content: "\e928";
+}
+.icon-oven:before {
+  content: "\e929";
+}
+.icon-security:before {
+  content: "\e92a";
+}
+.icon-airConditioning:before {
+  content: "\e92b";
+}
+.icon-fireplace:before {
+  content: "\e92d";
+}
+.icon-satellite:before {
+  content: "\e92e";
+}
+.icon-furnished:before {
+  content: "\e92f";
+}
+.icon-mountainsViews:before {
+  content: "\e930";
+}
+.icon-exteriorFacade:before {
+  content: "\e931";
+}
+.icon-doorman:before {
+  content: "\e932";
+}
+.icon-seaViews:before {
+  content: "\e933";
+}
+.icon-elevator:before {
+  content: "\e934";
+}
+.icon-garden:before {
+  content: "\e935";
+}
+.icon-floor:before {
+  content: "\e936";
+}
+.icon-compass:before {
+  content: "\e937";
+}
+.icon-house:before {
+  content: "\e938";
+}
+.icon-sleep:before {
+  content: "\e939";
+}
+.icon-house-boxes:before {
+  content: "\e93a";
+}
+.icon-house-persons:before {
+  content: "\e93c";
+}
+.icon-go-up:before {
+  content: "\e93d";
+}
+.icon-sand-clock:before {
+  content: "\e93e";
+}
+.icon-hammer:before {
+  content: "\e93f";
+}
+.icon-hand-key:before {
+  content: "\e941";
+}
+.icon-hand-house:before {
+  content: "\e942";
+}
+.icon-triangle:before {
+  content: "\e943";
+}
+.icon-bath:before {
+  content: "\e944";
+}
+.icon-bed:before {
+  content: "\e945";
+}
+.icon-home:before {
+  content: "\f015";
+}
+
+/* Add some basic styling for the icons */
+i[class^="icon-"],
+i[class*=" icon-"] {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  font-size: 1.5em;
+  line-height: 1;
+  text-align: center;
+}

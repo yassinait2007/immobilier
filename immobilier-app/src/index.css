@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
+
+/* Hero Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+/* Custom transition durations */
+.duration-2000 {
+  transition-duration: 2000ms;
+}
+
+.duration-6000 {
+  transition-duration: 6000ms;
+}
+
+/* Fix for gradient text clipping */
+.bg-clip-text {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  line-height: 1.1 !important;
+  padding: 0.1em 0 !important;
+}
+
+/* Ensure text is properly displayed */
+.text-transparent {
+  color: transparent !important;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.swiper-pagination-bullet-active {
+  background: #4e5fa8 !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #4e5fa8 !important;
+}
+
+.footer-illustration {
+  position: relative;
+  height: 120px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.building {
+  position: absolute;
+  bottom: 0;
+}
+
+.building-1 {
+  left: 10%;
+  height: 80px;
+  width: 60px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.building-2 {
+  left: 20%;
+  height: 100px;
+  width: 80px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.building-3 {
+  left: 35%;
+  height: 70px;
+  width: 100px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.building-4 {
+  left: 55%;
+  height: 90px;
+  width: 70px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.building-5 {
+  left: 70%;
+  height: 110px;
+  width: 90px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.building-6 {
+  left: 85%;
+  height: 60px;
+  width: 50px;
+  background: linear-gradient(to right, #4e5fa8, #499ed7);
+  border-radius: 5px 5px 0 0;
+}
+
+.tree {
+  position: absolute;
+  bottom: 0;
+}
+
+.tree-1 {
+  left: 5%;
+  height: 40px;
+  width: 20px;
+  background: #ffb74d;
+  border-radius: 50% 50% 0 0;
+}
+
+.tree-2 {
+  left: 30%;
+  height: 30px;
+  width: 15px;
+  background: #ffb74d;
+  border-radius: 50% 50% 0 0;
+}
+
+.tree-3 {
+  left: 50%;
+  height: 35px;
+  width: 18px;
+  background: #ffb74d;
+  border-radius: 50% 50% 0 0;
+}
+
+.tree-4 {
+  left: 75%;
+  height: 45px;
+  width: 22px;
+  background: #ffb74d;
+  border-radius: 50% 50% 0 0;
+}
+
+.tree-5 {
+  left: 95%;
+  height: 50px;
+  width: 25px;
+  background: #ffb74d;
+  border-radius: 50% 50% 0 0;
+}
+
+/* Custom dropdown styles */
+.custom-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin-top: 0.25rem;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  max-height: 15rem;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f4f6;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--primary-600) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary-600) !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
