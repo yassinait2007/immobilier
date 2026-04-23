@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DashboardResource\ContractResource;
 use App\Models\Contract;
+use App\Models\ScheduledCharge;
 use App\utils\JsonResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -47,7 +48,9 @@ class ContractsController extends Controller
             'signed' => ['required', 'date'],
             'expiration' => ['required', 'date'],
             'realestate' => ['sometimes', 'exists:realstates,id'],
-            'documents.*' => ['file', 'mimes:jpeg,png,pdf']
+            'documents.*' => ['file', 'mimes:jpeg,png,pdf'],
+            'price' => ['nullable', 'numeric'],
+            'type' => ['nullable', 'string', 'in:client,owner']
         ]);
         if ($validator->fails()) {
             return $this->validationErrorResponse($validator->errors());
@@ -57,11 +60,23 @@ class ContractsController extends Controller
         $data["client_id"] = isset($data["client"]) ? $data["client"] : null;
         $data["realestate_id"] = isset($data["realestate"]) ? $data["realestate"] : null;
         $data["signed_date"] = $data["signed"];
-        $data["signed_data"] = $data["signed"];
         $data["expiration_date"] = $data["expiration"];
 
-
         $contract = Contract::create($data);
+        
+        // Automated creation of monthly charge if contract is for an owner
+        if ($contract->type === 'owner' && $contract->price > 0 && $contract->realestate_id) {
+            ScheduledCharge::create([
+                'name' => "Commission de Gestion - " . ($contract->realestate?->title ?? 'Contrat #' . $contract->id),
+                'description' => "Charge automatique générée par le contrat de gestion",
+                'amount' => $contract->price,
+                'type' => 'fixed',
+                'recurrence_type' => 'monthly',
+                'recurrence_value' => '1',
+                'realestate_id' => $contract->realestate_id,
+            ]);
+        }
+
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $file) {
                 $contract->addMedia($file)->toMediaCollection('documents');

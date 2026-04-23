@@ -188,9 +188,7 @@ class RealestateController extends Controller
     public function index(Request $request)
     {
         $status = $request->input("status");
-        $realestatesQuery = Realstate::with(["owner", "booking.client", "bookings", "city", "category", "type", "reviewStatus", "status", "etat", "features", "host"])->whereHas("host", function ($query) {
-            $query->where("agence", "=", "1");
-        })->with([
+        $realestatesQuery = Realstate::with(["owner", "booking.client", "bookings", "city", "category", "type", "reviewStatus", "status", "etat", "features", "host"])->with([
             'bookings' => function ($q) {
                 $q->whereDate('checkin', '>', today())
                     ->orderBy('checkin', 'asc');
@@ -200,7 +198,13 @@ class RealestateController extends Controller
         if ($status == "available") {
             $realestates = $realestatesQuery
                 ->whereDoesntHave("booking")
-                ->where("cleaning_status", "cleaned")
+                ->whereDoesntHave("bookings", function($q) {
+                    $q->whereDate("checkin", ">=", today());
+                })
+                ->where(function($q) {
+                    $q->where("cleaning_status", "cleaned")
+                      ->orWhereNull("cleaning_status");
+                })
                 ->withCount([
                     "bookings as todayBookings" => function ($query) {
                         $query->whereDate("checkin", today());
@@ -210,10 +214,13 @@ class RealestateController extends Controller
                 ->get();
         } else if ($status == "reserved") {
             $realestates = $realestatesQuery
-                ->whereHas('booking')
-                ->join('bookings', 'bookings.id', '=', 'realstates.booking_id')
-                ->orderBy('bookings.checkout', 'asc')
-                ->select('realstates.*')
+                ->where(function($q) {
+                    $q->whereHas('booking')
+                      ->orWhereHas('bookings', function($sq) {
+                          $sq->whereDate('checkin', '>=', today());
+                      });
+                })
+                ->orderBy("created_at", "desc")
                 ->get();
         } else if ($status == "cleaning") {
             $realestates = $realestatesQuery
@@ -223,9 +230,15 @@ class RealestateController extends Controller
         } else {
             $realestates = $realestatesQuery->get();
         }
-        //get next checkin
+        //get next checkin and fallback booking for display
         foreach ($realestates as $r) {
             $r->nextCheckin = $r->bookings->first()?->checkin;
+            
+            // If current booking is empty but we are in reserved view,
+            // provide the upcoming booking for the UI
+            if ($status == "reserved" && (!$r->relationLoaded('booking') || $r->booking == null)) {
+                $r->setRelation('booking', $r->bookings->first());
+            }
         }
 
         $response = RealestateResource::collection($realestates);
@@ -235,19 +248,29 @@ class RealestateController extends Controller
     public function realestatesOverview(Request $request)
     {
         $realestatesQuery = Realstate::with(["owner", "booking.client", "bookings", "city", "category", "type", "reviewStatus", "status", "status", "etat", "features", "host"])
-            ->whereHas("host", function ($query) {
-                $query->where("agence", "=", "1");
-            })->orderBy("created_at", "desc");
+            ->orderBy("created_at", "desc");
 
 
         $allRealetstate = (clone $realestatesQuery)->count();
 
         $nbAvailable = (clone $realestatesQuery)
             ->whereDoesntHave("booking")
-            ->where("cleaning_status", "cleaned")
+            ->whereDoesntHave("bookings", function($q) {
+                $q->whereDate("checkin", ">=", today());
+            })
+            ->where(function($q) {
+                $q->where("cleaning_status", "cleaned")
+                  ->orWhereNull("cleaning_status");
+            })
             ->count();
 
-        $nbReserved = (clone $realestatesQuery)->whereNotNull("booking_id")->count();
+        $nbReserved = (clone $realestatesQuery)
+            ->where(function($q) {
+                $q->whereNotNull('booking_id')
+                  ->orWhereHas('bookings', function($sq) {
+                      $sq->whereDate('checkin', '>=', today());
+                  });
+            })->count();
 
         $nbCleaning = (clone $realestatesQuery)
             ->whereDoesntHave("booking")

@@ -1,6 +1,6 @@
 import { Address } from "./Address";
 
-type UserType = "client" | "host"; // add more types if needed
+type UserType = "client" | "host" | "admin"; // add more types if needed
 
 export interface User {
   id: number;

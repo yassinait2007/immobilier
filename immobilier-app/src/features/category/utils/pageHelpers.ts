@@ -1,4 +1,4 @@
-const VALID_TRANSACTION_TYPES = ["rent-long", "rent-short", "selle"] as const;
+const VALID_TRANSACTION_TYPES = ["rent", "vacation_rental", "sale"] as const;
 
 export const isValidTransactionType = (type: string): type is typeof VALID_TRANSACTION_TYPES[number] => {
   return VALID_TRANSACTION_TYPES.includes(type as any);
@@ -6,11 +6,11 @@ export const isValidTransactionType = (type: string): type is typeof VALID_TRANS
 
 export const getPageTitle = (transactionType: string): string => {
   switch (transactionType) {
-    case "rent-long":
+    case "rent":
       return "Locations à long terme";
-    case "rent-short":
+    case "vacation_rental":
       return "Locations à court terme";
-    case "selle":
+    case "sale":
       return "Propriétés à Vendre";
     default:
       return "Propriétés à Vendre";
@@ -19,11 +19,11 @@ export const getPageTitle = (transactionType: string): string => {
 
 export const getPageDescription = (transactionType: string): string => {
   switch (transactionType) {
-    case "rent-long":
+    case "rent":
       return "Trouvez votre location idéale pour un séjour prolongé";
-    case "rent-short":
+    case "vacation_rental":
       return "Découvrez nos meilleures locations pour vos vacances";
-    case "selle":
+    case "sale":
       return "Explorez nos biens immobiliers à vendre";
     default:
       return "Explorez nos biens immobiliers à vendre";

@@ -22,19 +22,19 @@ export const useHomeData = () => {
 
         // Long term rentals
         setLoading((prev) => ({ ...prev, longTerm: true }));
-        const longTermRes = await fetchPropertiesByType("rent-long");
+        const longTermRes = await fetchPropertiesByType("rent");
         setLongTermProperties(longTermRes.data.items);
         setLoading((prev) => ({ ...prev, longTerm: false }));
 
         // Short term rentals
         setLoading((prev) => ({ ...prev, shortTerm: true }));
-        const shortTermRes = await fetchPropertiesByType("rent-short");
+        const shortTermRes = await fetchPropertiesByType("vacation_rental");
         setShortTermProperties(shortTermRes.data.items);
         setLoading((prev) => ({ ...prev, shortTerm: false }));
 
         // Properties for sale
         setLoading((prev) => ({ ...prev, forSale: true }));
-        const forSaleRes = await fetchPropertiesByType("selle");
+        const forSaleRes = await fetchPropertiesByType("sale");
         setForSaleProperties(forSaleRes.data.items);
         setLoading((prev) => ({ ...prev, forSale: false }));
       } catch (error) {

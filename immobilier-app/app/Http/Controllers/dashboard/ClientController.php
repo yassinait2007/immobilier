@@ -22,8 +22,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = User::whereHas("type", function ($query) {
-            $query->where("code", "=", "client")
-                ->where("from_platform", "=", "0");
+            $query->where("code", "=", "client");
         })->get();
         $response = ClientResource::collection($clients);
         return $this->successResponse($response);

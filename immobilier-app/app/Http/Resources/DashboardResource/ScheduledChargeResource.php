@@ -14,10 +14,12 @@ class ScheduledChargeResource extends JsonResource
             "name" => $this->name,
             "description" => $this->description,
             "amount" => $this->amount,
+            "type" => $this->type,
             "recurrenceType" => $this->recurrence_type,
             "recurrenceValue" => $this->recurrence_value,
             "createdAt" => $this->created_at,
             "realestate" => new RealestateResource($this->realestate),
+
         ];
     }
 }

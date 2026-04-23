@@ -43,6 +43,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->input("password"));
         $clientType = UserType::where("code", "=", "client")->first();
         $user->type_id = $clientType->id;
+        $user->from_platform = 1;
         $user->save();
 
         $user->sendEmailVerificationNotification();

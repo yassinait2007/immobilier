@@ -129,13 +129,13 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            <nav className="hidden lg:flex items-center space-x-12">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   className={clsx(
-                    "relative text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg",
+                    "relative text-sm font-medium transition-all duration-300 px-6 py-2 rounded-xl",
                     location.pathname === link.href
                       ? "text-primary bg-primary/5"
                       : "text-gray-700 hover:text-primary hover:bg-primary/5"
@@ -143,19 +143,19 @@ const Header: React.FC = () => {
                 >
                   {link.label}
                   {location.pathname === link.href && (
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></div>
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full shadow-[0_0_8px_rgba(78,95,168,0.5)]"></div>
                   )}
                 </Link>
               ))}
             </nav>
 
             {/* Right Controls */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               {/* Become Host Button - Desktop */}
               <Button
                 onClick={handleBecomeHost}
                 disabled={loading}
-                className="hidden md:inline-flex bg-gradient-to-r from-primary-light to-primary hover:from-primary hover:to-primary-light text-white px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="hidden md:inline-flex bg-gradient-to-r from-primary-light to-primary hover:from-primary hover:to-primary-light text-white px-8 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:scale-[1.03] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {getHostButtonText()}
               </Button>
@@ -163,7 +163,7 @@ const Header: React.FC = () => {
               {/* User Menu */}
               {loading ? (
                 <div className="flex items-center space-x-4">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                  <div className="w-10 h-10 bg-gray-100 rounded-full animate-pulse"></div>
                 </div>
               ) : isAuthenticated ? (
                 <div className="relative" ref={profileDropdownRef}>
@@ -260,16 +260,16 @@ const Header: React.FC = () => {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-8">
                   <button
                     onClick={() => openAuthModal("login")}
-                    className="text-sm font-medium text-gray-700 hover:text-primary transition-all duration-300 px-3 py-2 rounded-lg hover:bg-primary/5"
+                    className="text-sm font-semibold text-gray-700 hover:text-primary transition-all duration-300 px-2 py-2"
                   >
                     Se connecter
                   </button>
                   <button
                     onClick={() => openAuthModal("register")}
-                    className="bg-gradient-to-r from-primary-light to-primary hover:from-primary hover:to-primary-light text-white px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+                    className="bg-gradient-to-r from-primary-light to-primary hover:from-primary hover:to-primary-light text-white px-10 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shadow-lg hover:shadow-primary/20 hover:scale-[1.03]"
                   >
                     S'inscrire
                   </button>

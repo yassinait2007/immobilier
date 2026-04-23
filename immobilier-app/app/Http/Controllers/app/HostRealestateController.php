@@ -166,6 +166,16 @@ class HostRealestateController extends Controller
             $data["city_id"] = $data["city"];
             $data["review_status_id"] = RealstateReviewStatus::where("code", "in-review")->first()->id;
             $data["status_id"] = RealstateStatus::where("code", "pending")->first()->id;
+            $data["cleaning_status"] = "cleaned";
+            $owner = \App\Models\Owner::firstOrCreate(
+                ['email' => $user->email],
+                [
+                    'name' => $user->first_name . ' ' . $user->last_name,
+                    'tel' => $user->tel ?? '',
+                    'address' => $user->address ?? 'Web Host'
+                ]
+            );
+            $data["owner_id"] = $owner->id;
             $data["host_id"] = $user->id;
 
             // create realestate
@@ -371,8 +381,17 @@ class HostRealestateController extends Controller
 
             $data["review_status_id"] = RealstateReviewStatus::where("code", "=", "in-review")->first()->id;
             $data["status_id"] = RealstateStatus::where("code", "=", "pending")->first()->id;
+            $owner = \App\Models\Owner::firstOrCreate(
+                ['email' => $user->email],
+                [
+                    'name' => $user->first_name . ' ' . $user->last_name,
+                    'tel' => $user->tel ?? '',
+                    'address' => $user->address ?? 'Web Host'
+                ]
+            );
+            $data["owner_id"] = $owner->id;
             $data["host_id"] = $user->id;
-
+ 
             $realestate->update($data);
 
             // update features

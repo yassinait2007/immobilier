@@ -46,7 +46,7 @@ Route::get("/features", [FeaturesController::class, "index"]);
 
 
 
-Route::group(["middleware" => ["auth:managers"]], function () {
+Route::group(["middleware" => ["auth:sanctum,managers"]], function () {
     Route::get("/me", [AuthController::class, "me"]);
     Route::resource("realestates", RealestateController::class);
     Route::post("realestates/{id}", [RealestateController::class, 'update']);
@@ -59,6 +59,7 @@ Route::group(["middleware" => ["auth:managers"]], function () {
     Route::post("clients/{id}", [ClientController::class, 'update']);
     Route::resource("contracts", ContractsController::class);
     Route::resource("charges", ChargeController::class);
+    Route::post("charges/{id}/validate", [ChargeController::class, "validateCharge"]);
     Route::resource("scheduled-charges", ScheduledChargeController::class);
     Route::get("/stats", [StatistiquesController::class, "stats"]);
     Route::get("/global-stats", [StatistiquesController::class, "globalStats"]);

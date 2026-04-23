@@ -19,6 +19,7 @@ export const BookingForm = ({ property }: { property: Property }) => {
   const [checkOut, setCheckOut] = useState<Date | undefined>(undefined);
   const [guests, setGuests] = useState(1);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const { isAuthenticated } = useAuth();
@@ -33,7 +34,7 @@ export const BookingForm = ({ property }: { property: Property }) => {
 
   const nights = calculateNights();
   const total = nights * property.price;
-  const canBook = nights > 0;
+  const canBook = nights > 0 && !isLoading;
 
   const onClientBook = async () => {
     if (!isAuthenticated) {
@@ -42,16 +43,26 @@ export const BookingForm = ({ property }: { property: Property }) => {
       }
       return;
     }
-    const checkinDate = format(checkIn!, "yyyy-MM-dd");
-    const checkoutDate = format(checkOut!, "yyyy-MM-dd");
-    const request = {
-      checkin: checkinDate,
-      checkout: checkoutDate,
-      guest: guests,
-      realestate: property.id,
-    };
-    await bookProperty(request);
-    navigate("/client/bookings");
+
+    setIsLoading(true);
+    try {
+      const checkinDate = format(checkIn!, "yyyy-MM-dd");
+      const checkoutDate = format(checkOut!, "yyyy-MM-dd");
+      const request = {
+        checkin: checkinDate,
+        checkout: checkoutDate,
+        guest: guests,
+        realestate: property.id,
+      };
+      await bookProperty(request);
+      navigate("/client/bookings");
+    } catch (error: any) {
+      console.error("Booking error:", error);
+      const errorMsg = error?.response?.data?.error || error?.response?.data?.message || "Une erreur est survenue lors de la réservation.";
+      alert(errorMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -81,7 +92,11 @@ export const BookingForm = ({ property }: { property: Property }) => {
           <div className="space-y-3">
             <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
               <PopoverTrigger asChild>
-                <button className="w-full border border-gray-300 rounded-xl p-3 lg:p-4 hover:border-primary transition-colors text-left group">
+                <button 
+                  disabled={isLoading}
+                  className="w-full border border-gray-300 rounded-xl p-3 lg:p-4 hover:border-primary transition-colors text-left group disabled:opacity-50"
+                  type="button"
+                >
                   <div className="flex items-center justify-between">
                     <div className="grid grid-cols-2 gap-3 flex-1">
                       <div>
@@ -151,7 +166,7 @@ export const BookingForm = ({ property }: { property: Property }) => {
                   size="icon"
                   className="h-8 w-8 rounded-full border-gray-300"
                   onClick={() => setGuests(Math.max(1, guests - 1))}
-                  disabled={guests <= 1}
+                  disabled={guests <= 1 || isLoading}
                 >
                   <span className="text-lg font-medium">–</span>
                 </Button>
@@ -162,7 +177,7 @@ export const BookingForm = ({ property }: { property: Property }) => {
                   size="icon"
                   className="h-8 w-8 rounded-full border-gray-300"
                   onClick={() => setGuests(Math.min(20, guests + 1))}
-                  disabled={guests >= 20}
+                  disabled={guests >= 20 || isLoading}
                 >
                   <span className="text-lg font-medium">+</span>
                 </Button>
@@ -194,13 +209,20 @@ export const BookingForm = ({ property }: { property: Property }) => {
           {/* Book Button */}
           <Button
             className="w-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white py-3 lg:py-4 font-semibold text-base lg:text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!canBook}
+            disabled={!canBook || isLoading}
             onClick={onClientBook}
           >
-            {!canBook ? "Sélectionnez vos dates" : "Réserver"}
+            {isLoading ? (
+              <div className="flex items-center gap-2 justify-center">
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Traitement...</span>
+              </div>
+            ) : (
+              !canBook ? "Sélectionnez vos dates" : "Réserver"
+            )}
           </Button>
 
-          {canBook && (
+          {!isLoading && canBook && (
             <p className="text-center text-xs lg:text-sm text-gray-600">
               Vous ne serez pas débité pour le moment
             </p>

@@ -12,20 +12,20 @@ export const registerRequest = (
   lastName: string,
   email: string,
   password: string
-) => apiClient.post("/register", { firstName, lastName, email, password });
+) => apiClient.post("register", { firstName, lastName, email, password });
 
 export const fetchCurrentUser = async (): Promise<ApiResponse<User>> => {
-  const response = await apiClient.get<ApiResponse<User>>("/me");
+  const response = await apiClient.get<ApiResponse<User>>("me");
   console.log("============me", response);
   return response.data;
 };
 
 export const forgotPasswordRequest = (email: string) =>
-  apiClient.post("/forget-password", { email });
+  apiClient.post("forget-password", { email });
 
 export const resetPasswordRequest = (password: string, token: string) =>
   apiClient.post(
-    "/reset-password",
+    "reset-password",
     { password },
     {
       headers: { Authorization: `Bearer ${token}` },
@@ -33,4 +33,4 @@ export const resetPasswordRequest = (password: string, token: string) =>
   );
 
 export const verifyOtpRequest = (otp: string, email: string) =>
-  apiClient.post("/check-otp", { email, otp });
+  apiClient.post("check-otp", { email, otp });

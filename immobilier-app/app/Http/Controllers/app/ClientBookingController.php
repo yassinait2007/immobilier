@@ -33,7 +33,7 @@ class ClientBookingController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            "checkin" => ["required", "date", "date_format:Y-m-d", "after:now"],
+            "checkin" => ["required", "date", "date_format:Y-m-d", "after_or_equal:today"],
             "checkout" => ["required", "date", "after:checkin", "date_format:Y-m-d"],
             "guest" => ["required", "integer", "gt:0"],
             "realestate" => ["required", "exists:realstates,id"]
@@ -44,7 +44,7 @@ class ClientBookingController extends Controller
 
         //=============check the transaction type
         $isShort = Realstate::where("id", $request->input("realestate"))->whereHas("type", function ($query) {
-            $query->where("code", "=", "rent-short");
+            $query->whereIn("code", ["rent-short", "vacation_rental"]);
         })->exists();
         if (!$isShort) {
             return $this->jsonResponse(false, "unrentable-real-estate", 422, null);
@@ -82,24 +82,30 @@ class ClientBookingController extends Controller
         $data["amount"] = $price * $nbdays;
         $data["price"] = $price;
         $type = TypeBooking::where("code", "=", "platform")->first();
-        $data["type_id"] = $type->id;
+        if (!$type) {
+            $type = TypeBooking::where("code", "=", "realworld")->first();
+        }
+        $data["type_id"] = $type ? $type->id : null;
+        $data["type_guest"] = $request->input("typeGuest", "famille"); // Default to "famille" if missing
         $booking = Booking::create($data)->fresh();
         //$booking->isRatable = now()->isAfter($checkout);
         $response = new ClientBookingResource($booking);
         //================send email to host
         $host = $realestate->host;
 
-        Mail::to($host->email)->send(
-            new ReservationMail(
-                title: "Nouvelle demande de réservation",
-                subtitle: "Vous avez reçu une nouvelle demande de réservation de {$request->user()->first_name } pour votre propriété {$realestate->name}.",
-                checkin: $booking->checkin,
-                checkout: $booking->checkout,
-                guest: $booking->nb_guest,
-                amount: $booking->amount . " MAD",
-                subject: "Nouvelle demande de réservation - {$realestate->title}"
-            )
-        );
+        if ($host && $host->email) {
+            Mail::to($host->email)->send(
+                new ReservationMail(
+                    title: "Nouvelle demande de réservation",
+                    subtitle: "Vous avez reçu une nouvelle demande de réservation de {$request->user()->first_name } pour votre propriété {$realestate->name}.",
+                    checkin: $booking->checkin,
+                    checkout: $booking->checkout,
+                    guest: $booking->nb_guest,
+                    amount: $booking->amount . " MAD",
+                    subject: "Nouvelle demande de réservation - {$realestate->title}"
+                )
+            );
+        }
 
 
 

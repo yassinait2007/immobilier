@@ -12,6 +12,9 @@ class Charge extends Model
         "note",
         "amount",
         "document",
+        "status",
+        "type",
+        "verification_document",
         "realestate_id"
     ];
 

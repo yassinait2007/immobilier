@@ -271,12 +271,14 @@ class BookingController extends Controller
         $from = Carbon::parse($from)->startOfDay();
         $to = Carbon::parse($to)->endOfDay();
 
-        $type = $request->input("type", "realworld");
+        $type = $request->input("type");
         $realestate = $request->input("realestate");
 
         $bookings = Booking::with(["client", "type", "clientReview", "paymentMethod", "hostReview", "client", "realestate"])
-            ->whereHas("type", function ($query) use ($type) {
-                $query->where("code", "=", $type);
+            ->when($request->filled("type"), function ($query) use ($type) {
+                $query->whereHas("type", function ($q) use ($type) {
+                    $q->where("code", "=", $type);
+                });
             })->when($request->filled("realestate"), function ($query) use ($realestate) {
                 $query->where("realestate_id", "=", $realestate);
             })

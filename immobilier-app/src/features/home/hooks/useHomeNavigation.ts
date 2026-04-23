@@ -12,7 +12,7 @@ export const useHomeNavigation = () => {
   };
 
   const handleExploreProperties = () => {
-    navigate('/categories?type=rent-short');
+    navigate('/categories?type=vacation_rental');
   };
 
   const handleLearnMore = () => {

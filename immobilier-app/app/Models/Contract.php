@@ -15,7 +15,9 @@ class Contract extends Model implements HasMedia
         "client_id",
         "signed_date",
         "expiration_date",
-        "realestate_id"
+        "realestate_id",
+        "price",
+        "type"
     ];
 
     public function registerMediaCollections(): void

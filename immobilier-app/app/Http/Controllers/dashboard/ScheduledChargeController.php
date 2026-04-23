@@ -16,9 +16,14 @@ class ScheduledChargeController extends Controller
     public function index(Request $request)
     {
         $realestate = $request->input("realestate");
+        $type = $request->input("type");
+
         $charges = ScheduledCharge::with("realestate")
             ->when($realestate, function ($query) use ($realestate) {
                 $query->where("realestate_id", $realestate);
+            })
+            ->when($type && $type != 'all', function ($query) use ($type) {
+                $query->where("type", $type);
             })
             ->orderBy("created_at", "desc")
             ->get();
@@ -33,6 +38,7 @@ class ScheduledChargeController extends Controller
             "name" => ["required", "string"],
             "description" => ["nullable", "string"],
             "amount" => ["required", "numeric"],
+            "type" => ["nullable", "string", "in:fixed,variable"],
             "recurrence_type" => ["required", "string"], // weekly, monthly, yearly
             "recurrence_value" => ["nullable", "string"],
             "realestate" => ["required", "exists:realstates,id"]
@@ -44,8 +50,10 @@ class ScheduledChargeController extends Controller
 
         $data = $validator->validated();
         $data["realestate_id"] = $data["realestate"];
+        $data["type"] = isset($data["type"]) ? $data["type"] : "fixed";
         
         $charge = ScheduledCharge::create($data);
+
         $response = new ScheduledChargeResource($charge);
         
         return $this->createdResponse($response);

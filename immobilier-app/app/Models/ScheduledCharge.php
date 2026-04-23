@@ -10,6 +10,7 @@ class ScheduledCharge extends Model
         'name',
         'description',
         'amount',
+        'type',
         'recurrence_type',
         'recurrence_value',
         'realestate_id'

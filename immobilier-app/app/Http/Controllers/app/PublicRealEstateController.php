@@ -46,6 +46,7 @@ class PublicRealEstateController extends Controller
             ->orderByRaw("rate * nb_raters DESC")
             ->paginate($request->input("perPage", 20), ['*'], "realestate", $request->input("page", 1));
 
+
         //fetch favorites if authenticated
         $user = auth("sanctum")->user();
 

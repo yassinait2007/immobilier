@@ -13,7 +13,10 @@ use App\Http\Controllers\app\FavoritesController;
 use App\Http\Controllers\app\FeaturesController;
 use App\Http\Controllers\app\HomeImages;
 use App\Http\Controllers\app\HostBookingController;
+use App\Http\Controllers\app\HostChargeController;
+use App\Http\Controllers\app\HostContractController;
 use App\Http\Controllers\app\HostRealestateController;
+use App\Http\Controllers\app\HostScheduledChargeController;
 use App\Http\Controllers\app\ProfileController;
 use App\Http\Controllers\app\ProfilesController;
 use App\Http\Controllers\app\PublicRealEstateController;
@@ -87,6 +90,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::patch("/bookings/{id}/reject", [HostBookingController::class, 'rejectBooking']);
         Route::patch("/bookings/{id}/confirm", [HostBookingController::class, 'confirmBooking']);
         Route::post("/bookings/{id}/rate", [HostBookingController::class, 'rateBooking']);
+        
+        Route::get("/contracts", [HostContractController::class, "index"]);
+        Route::post("/contracts", [HostContractController::class, "store"]);
+        Route::get("/charges", [HostChargeController::class, "index"]);
+        Route::post("/charges", [HostChargeController::class, "store"]);
+        Route::post("/charges/{id}/validate", [HostChargeController::class, "validate"]);
+        Route::get("/scheduled_charges", [HostScheduledChargeController::class, "index"]);
+        Route::post("/scheduled_charges", [HostScheduledChargeController::class, "store"]);
+
         Route::get("/transactions", [TransactionController::class, "index"]);
         Route::get("/balances", [TransactionController::class, "blances"]);
         Route::prefix("dashboard")->group(function () {

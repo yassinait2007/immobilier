@@ -32,22 +32,24 @@ const HeroContent = ({ onExploreProperties, onLearnMore }: HeroContentProps) => 
           </div>
 
           <div className="flex flex-wrap gap-8 mb-12 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            {heroContent.stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">
-                  {stat.number}
+            <div className="flex gap-12 bg-white/10 backdrop-blur-md px-10 py-6 rounded-3xl border border-white/20">
+              {heroContent.stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-3xl md:text-4xl font-extrabold text-white mb-1 drop-shadow-lg tracking-tight">
+                    {stat.number}
+                  </div>
+                  <div className="text-white/80 text-sm font-semibold uppercase tracking-widest drop-shadow-md">
+                    {stat.label}
+                  </div>
                 </div>
-                <div className="text-gray-200 font-medium drop-shadow-md">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
+          <div className="flex flex-col sm:flex-row gap-6 animate-fade-in-up" style={{ animationDelay: "0.6s" }}>
             <button 
               onClick={onExploreProperties}
-              className="bg-white text-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 group"
+              className="bg-gradient-to-r from-primary-light to-primary text-white border-2 border-transparent px-10 py-4 rounded-full font-bold transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(78,95,168,0.5)] hover:scale-[1.03] flex items-center justify-center gap-3 group"
             >
               <Home className="w-5 h-5" />
               <span>Explorer les Propriétés</span>
@@ -55,7 +57,7 @@ const HeroContent = ({ onExploreProperties, onLearnMore }: HeroContentProps) => 
             </button>
             <button 
               onClick={onLearnMore}
-              className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-white hover:text-primary hover:shadow-xl hover:scale-105"
+              className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white px-10 py-4 rounded-full font-bold transition-all duration-500 hover:bg-white hover:text-primary hover:border-white hover:shadow-xl hover:scale-[1.03]"
             >
               En Savoir Plus
             </button>

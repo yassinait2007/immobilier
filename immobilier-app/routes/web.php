@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::fallback(function () {
+    return view('home');
+});
+
 
 // Sends the verification link to the user's email
 // Route::post('/email/verification-notification', function (Request $request) {

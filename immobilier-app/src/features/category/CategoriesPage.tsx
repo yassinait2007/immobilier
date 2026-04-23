@@ -31,9 +31,9 @@ const CategoriesPage = () => {
               <AlertDescription>
                 Le paramètre 'type' est requis dans l'URL. Veuillez spécifier un type de transaction valide :
                 <ul className="mt-2 list-disc list-inside">
-                  <li>rent-long (location long terme)</li>
-                  <li>rent-short (location court terme)</li>
-                  <li>selle (vente)</li>
+                  <li>rent (location long terme)</li>
+                  <li>vacation_rental (location court terme)</li>
+                  <li>sale (vente)</li>
                 </ul>
               </AlertDescription>
             </Alert>

@@ -12,8 +12,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const buttonVariants = {
   variant: {
-    default: "bg-gray-800 text-white hover:bg-gray-700",
-    primary: "bg-primary text-white hover:opacity-90",
+    default: "bg-gradient-to-r from-primary to-primary-light text-white shadow-md hover:shadow-lg transition-all duration-300",
+    primary: "bg-gradient-to-r from-primary to-primary-light text-white shadow-md hover:shadow-lg transition-all duration-300",
     outline: "border border-gray-300 bg-white hover:bg-gray-50",
     secondary: "bg-secondary text-white hover:bg-secondary/80",
     ghost: "hover:bg-gray-100",

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useAuth } from "@/context/authentication/auth-context";
 import { useAuthModal } from "@/context/authentication/auth-modal-context";
 import { Button } from "@/components/ui/button";
@@ -11,12 +10,10 @@ import { registerSchema } from "@/schemas/auth";
 import { formatZodErrors } from "@/schemas/validation-utils";
 import { Eye, EyeOff, Mail, Lock, User, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import RecaptchaWrapper from "@/components/RecaptchaWrapper";
 
 const RegisterForm: React.FC = () => {
   const { register } = useAuth();
   const { closeAuthModal, switchModalType, executeCallback } = useAuthModal();
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,27 +43,15 @@ const RegisterForm: React.FC = () => {
         return;
       }
 
-      const recaptchaToken = recaptchaRef.current?.getValue();
-      if (!recaptchaToken) {
-        setError("Veuillez cocher la case 'Je ne suis pas un robot' avant de continuer.");
-        setIsSubmitting(false);
-        return;
-      }
-
       await register(firstName, lastName, email, password);
       
       executeCallback();
       closeAuthModal(false);
     } catch (err: any) {
       setError(err.message || "Erreur lors de l'inscription");
-      recaptchaRef.current?.reset();
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleRecaptchaError = () => {
-    setError("Erreur de chargement de reCAPTCHA. Veuillez vérifier votre connexion internet.");
   };
 
   const passwordRequirements = [
@@ -248,18 +233,6 @@ const RegisterForm: React.FC = () => {
             <p className="text-sm text-red-600 mt-1">{errors.confirmPassword}</p>
           )}
         </div>
-
-        <RecaptchaWrapper 
-          recaptchaRef={recaptchaRef}
-          onError={handleRecaptchaError}
-          onExpired={() => setError('reCAPTCHA expiré. Veuillez cocher la case à nouveau.')}
-          onChange={(token) => {
-            if (token && error?.includes('reCAPTCHA')) {
-              setError(null);
-            }
-          }}
-          className="mt-4"
-        />
 
         <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-xl">
           En créant un compte, vous acceptez nos{" "}

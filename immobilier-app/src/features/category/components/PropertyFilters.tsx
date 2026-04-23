@@ -95,8 +95,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                       onCityChange("all");
                       setLocationOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                      selectedCity === "all" ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                    className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                      selectedCity === "all" ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                     }`}
                   >
                     Toutes les villes
@@ -109,8 +109,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                           onCityChange(city.id.toString());
                           setLocationOpen(false);
                         }}
-                        className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                          selectedCity === city.id.toString() ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                        className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                          selectedCity === city.id.toString() ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                         }`}
                       >
                         {city.name}
@@ -205,8 +205,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                       onCategoryChange("all");
                       setCategoryOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                      selectedCategory === "all" ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                    className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                      selectedCategory === "all" ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                     }`}
                   >
                     Toutes les catégories
@@ -218,8 +218,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                         onCategoryChange(category.value);
                         setCategoryOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                        selectedCategory === category.value ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                      className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                        selectedCategory === category.value ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                       }`}
                     >
                       {category.name}
@@ -252,8 +252,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                       onStateChange("all");
                       setStateOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                      selectedState === "all" ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                    className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                      selectedState === "all" ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                     }`}
                   >
                     Tous les états
@@ -265,8 +265,8 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
                         onStateChange(state.value);
                         setStateOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-3 hover:bg-cyan-50 rounded-lg transition-colors ${
-                        selectedState === state.value ? "bg-cyan-50 text-cyan-700 font-medium" : "text-gray-700"
+                      className={`w-full text-left px-4 py-3 hover:bg-primary/5 rounded-lg transition-colors ${
+                        selectedState === state.value ? "bg-primary/10 text-primary font-bold" : "text-gray-700"
                       }`}
                     >
                       {state.name}
@@ -281,7 +281,7 @@ export const PropertyFilters: React.FC<PropertyFiltersProps> = ({
         <div className="md:pl-2 p-4 md:p-0">
           <Button
             onClick={onApplyFilters}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white md:p-6 p-4 md:rounded-full rounded-xl w-full md:w-auto flex items-center justify-center gap-2"
+            className="bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary shadow-lg shadow-primary/20 text-white md:p-6 p-4 md:rounded-full rounded-xl w-full md:w-auto flex items-center justify-center gap-2 transform transition-transform hover:scale-105 active:scale-95"
           >
             <Search className="w-4 h-4" />
             <span className="md:hidden">Rechercher</span>

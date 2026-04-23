@@ -23,7 +23,7 @@ const Dialog = React.forwardRef<
     open?: boolean
     onOpenChange?: (open: boolean) => void
   }
->(({ children, open = false, onOpenChange }) => {
+>(({ children, open = false, onOpenChange }, ref) => {
   return (
     <DialogContext.Provider value={{ open, onOpenChange: onOpenChange || (() => {}) }}>
       {children}

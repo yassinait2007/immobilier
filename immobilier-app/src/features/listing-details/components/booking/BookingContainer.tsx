@@ -7,7 +7,7 @@ interface BookingContainerProps {
 }
 
 export const BookingContainer = ({ property }: BookingContainerProps) => {
-  const isShortTermRental = property.typeTransaction.value === "rent-short";
+  const isShortTermRental = property.typeTransaction.value === "rent-short" || property.typeTransaction.value === "vacation_rental";
 
   return (
     <div className="sticky top-24">

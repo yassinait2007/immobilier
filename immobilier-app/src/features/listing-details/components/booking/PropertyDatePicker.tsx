@@ -235,15 +235,15 @@ export const PropertyDatePicker: React.FC<PropertyDatePickerProps> = ({
                 disabled={isDisabled || !isCurrentMonth}
                 className={cn(
                   "relative h-8 w-8 text-xs transition-all duration-200 rounded-md",
-                  "hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-cyan-500",
+                  "hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-primary",
                   {
                     "text-gray-900": isCurrentMonth,
                     "text-gray-300": !isCurrentMonth,
                     "opacity-40 cursor-not-allowed line-through text-red-400": isDisabled && isCurrentMonth,
                     "hover:bg-transparent": isDisabled,
-                    "bg-cyan-600 text-white hover:bg-cyan-700": isSelected,
-                    "bg-cyan-100 text-cyan-800": isInCurrentRange && !isSelected,
-                    "ring-1 ring-cyan-400": isToday && !isSelected && !isDisabled,
+                    "bg-primary text-white hover:bg-primary-light": isSelected,
+                    "bg-primary/10 text-primary font-bold": isInCurrentRange && !isSelected,
+                    "ring-1 ring-primary-light": isToday && !isSelected && !isDisabled,
                   }
                 )}
               >
@@ -267,7 +267,7 @@ export const PropertyDatePicker: React.FC<PropertyDatePickerProps> = ({
                 onCheckOutChange(undefined);
                 setIsSelectingCheckOut(false);
               }}
-              className="text-cyan-600 hover:text-cyan-700 text-xs"
+              className="text-primary hover:text-primary-light text-xs font-semibold"
             >
               Effacer les dates
             </Button>
@@ -277,7 +277,7 @@ export const PropertyDatePicker: React.FC<PropertyDatePickerProps> = ({
         <div className="mt-4 pt-3 border-t border-gray-200">
           <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-cyan-600 rounded-full"></div>
+              <div className="w-2 h-2 bg-primary rounded-full"></div>
               <span>Sélectionné</span>
             </div>
             <div className="flex items-center gap-1">

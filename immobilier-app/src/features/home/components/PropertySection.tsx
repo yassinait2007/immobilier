@@ -13,7 +13,7 @@ interface PropertySectionProps {
   subtitle?: string;
   properties: Property[];
   loading?: boolean;
-  transactionType: "rent-long" | "rent-short" | "selle";
+  transactionType: "rent" | "vacation_rental" | "sale";
   gradient?: string;
 }
 

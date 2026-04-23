@@ -17,6 +17,7 @@ class ClientResource extends JsonResource
             "email" => $this->email,
             "tel" => $this->tel,
             "type" => $this->type->code,
+            "fromPlatform" => $this->from_platform,
             "documentsProvided" => isset($this->documents) ? explode(";", $this->documents) : null,
             "profile" => $this->getFirstMediaUrl('profile_photo'),
             "bookings" => BookingResource::collection($this->whenLoaded("bookings")),

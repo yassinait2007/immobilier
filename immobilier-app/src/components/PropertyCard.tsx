@@ -70,7 +70,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const images = property.media?.map((m) => m.url) ?? [];
 
   const getPriceLabel = () => {
-    return property.typeTransaction?.value === "selle" ? "" : "/ nuit";
+    return property.typeTransaction?.value === "sale" ? "" : "/ nuit";
   };
 
   const renderStarRating = (rating: number, ratingCount: number) => {
@@ -136,7 +136,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             pagination={{ 
               clickable: true,
               bulletClass: 'swiper-pagination-bullet !bg-white !opacity-60 !w-2 !h-2',
-              bulletActiveClass: 'swiper-pagination-bullet-active !opacity-100 !bg-cyan-500'
+              bulletActiveClass: 'swiper-pagination-bullet-active !opacity-100 !bg-primary'
             }}
             className="w-full h-48"
           >
@@ -242,7 +242,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             
             {/* Location */}
             <div className="flex items-center gap-1 text-gray-500">
-              <MapPin className="w-3 h-3 text-cyan-500 flex-shrink-0" />
+              <MapPin className="w-3 h-3 text-primary flex-shrink-0" />
               <span className="text-xs truncate">
                 <AddressDisplay address={property.address} format="short" />
               </span>
@@ -260,22 +260,22 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         {/* Property Details */}
         <div className="flex items-center gap-3 mb-2 text-gray-600">
           <div className="flex items-center gap-0.5">
-            <Bed className="w-3 h-3 text-cyan-500" />
+            <Bed className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium">{property.nbRooms || 0}</span>
           </div>
           <div className="flex items-center gap-0.5">
-            <Bath className="w-3 h-3 text-cyan-500" />
+            <Bath className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium">{property.nbBathroom || 0}</span>
           </div>
           <div className="flex items-center gap-0.5">
-            <Square className="w-3 h-3 text-cyan-500" />
+            <Square className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium">{property.surface || 0}m²</span>
           </div>
         </div>
 
         {/* Property Type */}
         <div className="flex items-center gap-1.5 mb-3 flex-wrap">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-cyan-50 text-cyan-700 border border-cyan-200 max-w-[120px]">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 max-w-[120px]">
             <span className="truncate">
               {property.category?.name || 'Appartement'}
             </span>
@@ -296,7 +296,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
               <span className="text-lg font-bold text-primary">
                 {formatCurrency(property.price || 0)}
               </span>
-              <span className="text-sm font-medium text-cyan-600">
+              <span className="text-sm font-medium text-primary-light">
                 {getPriceLabel()}
               </span>
             </div>
@@ -304,7 +304,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
           {/* View Details Button */}
           <button 
-            className="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-medium rounded-md transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0"
+            className="px-4 py-1.5 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-white text-xs font-semibold rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-x-1 group-hover:translate-x-0 shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               handleCardClick();

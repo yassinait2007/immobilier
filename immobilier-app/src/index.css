@@ -1,7 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
+@config "../tailwind.config.js";
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -27,7 +25,8 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    background-color: #ffffff;
+    color: #111827;
   }
 }
 

@@ -3,7 +3,6 @@
 import { useHomeData, useHomeNavigation } from "./hooks";
 import {
   HeroSlider,
-  HomeHeader,
   CategoryNavigationButtons,
   PropertySection,
   RecommendationSection,
@@ -38,8 +37,6 @@ const HomePage = () => {
       />
 
       <div className="bg-white">
-        <HomeHeader />
-
         <div id="categories-section" className="bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <CategoryNavigationButtons />
@@ -55,7 +52,7 @@ const HomePage = () => {
                 subtitle="Séjours parfaits pour vos vacances et voyages d'affaires"
                 properties={shortTermProperties}
                 loading={loading.shortTerm}
-                transactionType="rent-short"
+                transactionType="vacation_rental"
                 gradient="from-primary-light to-primary"
               />
             </div>
@@ -66,7 +63,7 @@ const HomePage = () => {
                 subtitle="Trouvez votre nouveau chez-vous pour une vie confortable"
                 properties={longTermProperties}
                 loading={loading.longTerm}
-                transactionType="rent-long"
+                transactionType="rent"
                 gradient="from-primary to-primary-light"
               />
             </div>
@@ -77,7 +74,7 @@ const HomePage = () => {
                 subtitle="Investissez dans votre futur avec nos opportunités exclusives"
                 properties={forSaleProperties}
                 loading={loading.forSale}
-                transactionType="selle"
+                transactionType="sale"
                 gradient="from-primary-light to-primary"
               />
             </div>
