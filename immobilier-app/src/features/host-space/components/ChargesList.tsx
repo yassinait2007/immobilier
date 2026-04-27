@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCharges, Charge, validateChargePayment } from '../api/chargesApi';
+import { fetchCharges, Charge, validateChargePayment, cancelCharge } from '../api/chargesApi';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -150,10 +150,65 @@ export const ChargesList: React.FC<ChargesListProps> = ({ realestateId }) => {
                     </div>
 
                     {charge.status === 'pending' && (
-                      <Button onClick={() => handleValidateCharge(charge.id)} className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-6">
-                        <CheckCircle2 className="h-5 w-5 mr-2" />
-                        Valider le Paiement
-                      </Button>
+                      <div className="space-y-3 mt-4">
+                        <div className="flex flex-col gap-2">
+                          <Label htmlFor={`proof-${charge.id}`} className="text-xs text-gray-500 font-medium">
+                            Preuve de paiement (Optionnel)
+                          </Label>
+                          <Input 
+                            id={`proof-${charge.id}`} 
+                            type="file" 
+                            accept="image/*,.pdf" 
+                            className="text-xs"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                charge.proofFile = file; // Storing temporarily on the object
+                              }
+                            }}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            onClick={async () => {
+                              const formData = new FormData();
+                              if ((charge as any).proofFile) {
+                                formData.append('document', (charge as any).proofFile);
+                              }
+                              try {
+                                await validateChargePayment(charge.id, (charge as any).proofFile ? formData : undefined);
+                                loadCharges();
+                              } catch(err) {
+                                setError('Erreur lors de la validation');
+                              }
+                            }} 
+                            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold"
+                          >
+                            <CheckCircle2 className="h-4 w-4 mr-2" />
+                            Valider
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            onClick={async () => {
+                              if (window.confirm('Voulez-vous vraiment annuler cette charge ?')) {
+                                try {
+                                  // Assuming there's a cancel endpoint or we use validate API?
+                                  // Wait, I need to see how to cancel a charge in the API. 
+                                  // I will create a cancelCharge method in chargesApi.ts.
+                                  await cancelCharge(charge.id);
+                                  loadCharges();
+                                } catch(err) {
+                                  setError("Erreur lors de l'annulation");
+                                }
+                              }
+                            }}
+                            className="text-red-600 border-red-100 hover:bg-red-50"
+                          >
+                            <AlertCircle className="h-4 w-4 mr-2" />
+                            Annuler
+                          </Button>
+                        </div>
+                      </div>
                     )}
                   </CardContent>
                 </Card>

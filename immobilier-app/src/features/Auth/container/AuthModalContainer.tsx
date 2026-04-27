@@ -31,7 +31,7 @@ const AuthModalContainer: React.FC = () => {
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary via-primary-light to-primary bg-clip-text text-transparent">
-                Bienvenue chez les vacances d'agadir
+                Bienvenue chez Crystalimmo Agadir
               </CardTitle>
               <CardDescription className="text-gray-600">
                 Trouvez votre propriété de rêve au Maroc

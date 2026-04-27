@@ -9,9 +9,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/utils/toast';
 
 export const PropertiesList = () => {
-  const { properties, loading: loadingProperties, error: errorProperties } = useProperties();
-  const { info } = useToast();
-  const handleNotImplemented = () => info("En cours de développement \uD83D\uDEA7", "Cette fonctionnalité arrive bientôt.");
+  const { properties, loading: loadingProperties, error: errorProperties, deleteProperty } = useProperties();
+  const { success, error } = useToast();
+
+  const handleDelete = async (id: number, title: string) => {
+    if (window.confirm(`Êtes-vous sûr de vouloir supprimer le bien "${title}" ?`)) {
+      try {
+        await deleteProperty(id);
+        success("Bien supprimé", "La propriété a été retirée avec succès.");
+      } catch (err) {
+        error("Erreur", "Impossible de supprimer la propriété.");
+      }
+    }
+  };
 
   if (loadingProperties) {
     return (
@@ -134,10 +144,16 @@ export const PropertiesList = () => {
                            Détails
                         </Link>
                      </Button>
-                     <Button variant="outline" className="rounded-2xl h-12 w-12 bg-white border-gray-100 hover:bg-blue-50 hover:text-blue-600 p-0">
-                        <Settings2 className="h-5 w-5" />
+                     <Button variant="outline" className="rounded-2xl h-12 w-12 bg-white border-gray-100 hover:bg-blue-50 hover:text-blue-600 p-0" asChild>
+                        <Link to={`/host/edit-property/${property.id}`}>
+                           <Settings2 className="h-5 w-5" />
+                        </Link>
                      </Button>
-                     <Button variant="outline" className="rounded-2xl h-12 w-12 bg-white border-gray-100 hover:bg-red-50 hover:text-red-500 p-0">
+                     <Button 
+                        variant="outline" 
+                        className="rounded-2xl h-12 w-12 bg-white border-gray-100 hover:bg-red-50 hover:text-red-500 p-0"
+                        onClick={() => handleDelete(property.id, property.title)}
+                     >
                         <Trash2 className="h-5 w-5" />
                      </Button>
                   </CardFooter>

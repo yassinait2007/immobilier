@@ -28,7 +28,7 @@ const ResetPasswordForm: React.FC = () => {
       return;
     }
     try {
-      await resetPassword(password, ""); // You may want to pass token if needed
+      await resetPassword(password);
       openAuthModal("login");
     } catch (err: any) {
       setError(err.message || "Erreur lors de la réinitialisation");

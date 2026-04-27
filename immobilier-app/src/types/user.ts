@@ -11,5 +11,6 @@ export interface User {
   type: UserType;
   profile: string;
   address: Address | null;
+  identityStatus?: 'pending' | 'valid' | 'refused';
   accessToken: string;
 }

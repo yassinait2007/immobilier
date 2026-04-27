@@ -50,3 +50,8 @@ export const validateChargePayment = async (chargeId: number, formData?: FormDat
   });
   return response.data;
 };
+
+export const cancelCharge = async (chargeId: number) => {
+  const response = await apiClient.post<ApiResponse<Charge>>(`host/charges/${chargeId}/cancel`);
+  return response.data;
+};

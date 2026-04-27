@@ -8,6 +8,9 @@ interface PropertyContextType {
   loading: boolean;
   error: string | null;
   refreshProperties: () => Promise<void>;
+  deleteProperty: (id: number) => Promise<void>;
+  pauseProperty: (id: number) => Promise<void>;
+  activateProperty: (id: number) => Promise<void>;
 }
 
 const PropertyContext = createContext<PropertyContextType | undefined>(undefined);
@@ -33,6 +36,8 @@ export const PropertyProvider: React.FC<{ children: ReactNode }> = ({ children }
         propertiesArray = data;
       } else if (data && Array.isArray(data.data)) {
         propertiesArray = data.data;
+      } else if (data && data.data && Array.isArray(data.data.items)) {
+        propertiesArray = data.data.items;
       } else if (data && data.data && Array.isArray(data.data.data)) {
         propertiesArray = data.data.data;
       }
@@ -45,6 +50,42 @@ export const PropertyProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
+  const handleDeleteProperty = async (id: number) => {
+    try {
+      setLoading(true);
+      const { deleteProperty: apiDeleteProperty } = await import('@/features/host-space/api/propertiesApi');
+      await apiDeleteProperty(id);
+      setProperties(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error('Error deleting property:', err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePauseProperty = async (id: number) => {
+    try {
+      const { pauseProperty: apiPauseProperty } = await import('@/features/host-space/api/propertiesApi');
+      await apiPauseProperty(id);
+      await fetchProperties();
+    } catch (err) {
+      console.error('Error pausing property:', err);
+      throw err;
+    }
+  };
+
+  const handleActivateProperty = async (id: number) => {
+    try {
+      const { activateProperty: apiActivateProperty } = await import('@/features/host-space/api/propertiesApi');
+      await apiActivateProperty(id);
+      await fetchProperties();
+    } catch (err) {
+      console.error('Error activating property:', err);
+      throw err;
+    }
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchProperties();
@@ -54,7 +95,15 @@ export const PropertyProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [isAuthenticated]);
 
   return (
-    <PropertyContext.Provider value={{ properties, loading, error, refreshProperties: fetchProperties }}>
+    <PropertyContext.Provider value={{ 
+      properties, 
+      loading, 
+      error, 
+      refreshProperties: fetchProperties,
+      deleteProperty: handleDeleteProperty,
+      pauseProperty: handlePauseProperty,
+      activateProperty: handleActivateProperty
+    }}>
       {children}
     </PropertyContext.Provider>
   );

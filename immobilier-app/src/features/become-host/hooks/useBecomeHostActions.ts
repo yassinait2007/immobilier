@@ -28,7 +28,8 @@ export const useBecomeHostActions = () => {
     
     if (!result.success) {
       const formattedErrors = formatZodErrors(result.error);
-      return { isValid: false, errors: formattedErrors, message: result.error.errors[0]?.message || 'Veuillez corriger les erreurs du formulaire.' };
+      const issues = (result.error as any).issues || (result.error as any).errors || [];
+      return { isValid: false, errors: formattedErrors, message: issues[0]?.message || 'Veuillez corriger les erreurs du formulaire.' };
     }
     
     return { isValid: true, errors: {}, message: null };
@@ -65,13 +66,20 @@ export const useBecomeHostActions = () => {
       
       setSuccess(true);
       
-      setTimeout(() => {
-        navigate('/host-space');
-      }, 2000);
-      
     } catch (err: any) {
-      const message = err.response?.data?.message || 'Une erreur est survenue. Veuillez réessayer.';
-      setError(message);
+      if (err.response?.status === 422 && err.response?.data?.error) {
+        // Backend validation errors
+        const backendErrors = err.response.data.error;
+        const firstField = Object.keys(backendErrors)[0];
+        if (firstField) {
+          setError(backendErrors[firstField][0]);
+        } else {
+          setError('Erreur de validation. Veuillez vérifier vos informations.');
+        }
+      } else {
+        const message = err.response?.data?.message || 'Une erreur est survenue. Veuillez réessayer.';
+        setError(message === 'validation-error' ? 'Erreur de validation. Veuillez vérifier vos informations.' : message);
+      }
     } finally {
       setLoading(false);
     }

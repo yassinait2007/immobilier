@@ -61,6 +61,7 @@ const ETATS = [
 const TRANSACTIONS = [
   { label: 'Vente', value: 'sale' },
   { label: 'Location', value: 'rent' },
+  { label: 'Location vacances', value: 'vacation_rental' },
 ];
 
 // Features use integer IDs (must match database IDs in features table)
@@ -499,7 +500,7 @@ export const AddPropertyForm = () => {
                         {...register('category')}
                         className="w-full h-16 rounded-[1.25rem] bg-gray-50/50 border-gray-100 font-bold px-4 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
                       >
-                        {apiCategories.map(c => <option key={c.value} value={c.value}>{c.name}</option>)}
+                        {(apiCategories.length > 0 ? apiCategories : CATEGORIES).map(c => <option key={c.value} value={c.value}>{c.name || c.label}</option>)}
                       </select>
                     </div>
 
@@ -509,7 +510,7 @@ export const AddPropertyForm = () => {
                         {...register('typeTransaction')}
                         className="w-full h-16 rounded-[1.25rem] bg-gray-50/50 border-gray-100 font-bold px-4 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
                       >
-                        {apiTransactions.map(t => <option key={t.value} value={t.value}>{t.name}</option>)}
+                        {(apiTransactions.length > 0 ? apiTransactions : TRANSACTIONS).map(t => <option key={t.value} value={t.value}>{t.name || t.label}</option>)}
                       </select>
                     </div>
 
@@ -519,7 +520,7 @@ export const AddPropertyForm = () => {
                         {...register('etat')}
                         className="w-full h-16 rounded-[1.25rem] bg-gray-50/50 border-gray-100 font-bold px-4 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
                       >
-                        {apiEtats.map(e => <option key={e.value} value={e.value}>{e.name}</option>)}
+                        {(apiEtats.length > 0 ? apiEtats : ETATS).map(e => <option key={e.value} value={e.value}>{e.name || e.label}</option>)}
                       </select>
                     </div>
                   </div>
@@ -528,7 +529,8 @@ export const AddPropertyForm = () => {
                     {[
                       { icon: Bed, name: 'Chambres', key: 'nbRooms' },
                       { icon: Bath, name: 'S. Bain', key: 'nbBathrooms' },
-                      { icon: Building2, name: 'Étages', key: 'nbEtages' }
+                      { icon: Building2, name: 'Étage', key: 'etage' },
+                      { icon: Building2, name: 'Nb Étages', key: 'nbEtages' }
                     ].map((item) => (
                       <div key={item.key} className="p-4 bg-white border border-gray-100 rounded-3xl shadow-sm text-center">
                         <item.icon className="h-6 w-6 mx-auto mb-3 text-gray-400" />
@@ -548,6 +550,15 @@ export const AddPropertyForm = () => {
                         <p className="text-[10px] font-black text-gray-400 uppercase mt-2">{item.name}</p>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Date de construction</Label>
+                    <Input 
+                      type="date"
+                      {...register('dateConstruction')} 
+                      className="h-16 w-full rounded-[1.25rem] bg-gray-50/50 border-gray-100 font-bold px-6 focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+                    />
                   </div>
                 </motion.div>
               )}
@@ -571,23 +582,32 @@ export const AddPropertyForm = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {featuresList.map((feature) => {
+                  <div className="w-full p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-gray-500" />
+                    <span className="text-gray-800 font-bold">{selectedFeatures.length} équipement(s) sélectionné(s)</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {(featuresList.length > 0 ? featuresList : AVAILABLE_FEATURES).map((feature) => {
                       const isSelected = selectedFeatures.includes(feature.id);
                       return (
                         <button
                           key={feature.id}
                           type="button"
                           onClick={() => toggleFeature(feature.id)}
-                          className={`p-6 rounded-3xl border-2 transition-all flex flex-col items-center gap-3 ${
+                          className={`p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left ${
                             isSelected 
-                              ? 'bg-blue-600 border-blue-600 text-white shadow-xl shadow-blue-500/20 rotate-1' 
-                              : 'bg-gray-50/50 border-gray-100 text-gray-400 hover:border-blue-100 hover:bg-white'
+                              ? 'border-blue-600 bg-blue-50/50 shadow-md' 
+                              : 'border-gray-100 bg-white hover:border-blue-200'
                           }`}
                         >
-                           {/* Add a default icon or mapping if icon name is known, otherwise use a generic one */}
-                           <Zap className={`h-8 w-8 ${isSelected ? 'animate-bounce-slow' : ''}`} />
-                           <span className="text-xs font-black uppercase tracking-wider">{feature.name}</span>
+                           <div className={`h-6 w-6 flex-shrink-0 rounded flex items-center justify-center border transition-colors ${isSelected ? 'bg-blue-600 border-blue-600' : 'bg-white border-gray-300'}`}>
+                             {isSelected && <CheckCircle2 className="h-4 w-4 text-white" />}
+                           </div>
+                           <div>
+                             <p className="font-bold text-sm text-gray-900">{feature.name}</p>
+                             <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{feature.description || 'Équipement pour un meilleur confort...'}</p>
+                           </div>
                         </button>
                       );
                     })}

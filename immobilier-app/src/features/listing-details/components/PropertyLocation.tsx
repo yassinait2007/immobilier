@@ -15,12 +15,11 @@ export const PropertyLocation: FC<PropertyLocationSectionProps> = ({
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   const hasValidCoordinates =
-    typeof latitude === "number" && typeof longitude === "number";
+    latitude !== undefined && latitude !== null && !isNaN(Number(latitude)) && 
+    longitude !== undefined && longitude !== null && !isNaN(Number(longitude));
 
-  const embedUrl =
-    hasValidCoordinates && googleMapsApiKey
-      ? `https://www.google.com/maps/embed/v1/place?key=${googleMapsApiKey}&q=${latitude},${longitude}&zoom=15`
-      : "";
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+  const staticMapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${latitude},${longitude}&zoom=15&size=800x400&maptype=mapnik&markers=${latitude},${longitude},red-pushpin`;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -42,44 +41,48 @@ export const PropertyLocation: FC<PropertyLocationSectionProps> = ({
           </div>
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 mb-6">
+        <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 mb-6 cursor-pointer group">
           <div className="h-[400px] w-full">
-            {hasValidCoordinates && googleMapsApiKey ? (
-              <iframe
-                title="Property Location"
-                className="w-full h-full border-0"
-                src={embedUrl}
-                loading="lazy"
-                allowFullScreen
-              ></iframe>
+            {hasValidCoordinates ? (
+              <div className="relative w-full h-full">
+                <iframe
+                  title="Carte"
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  scrolling="no"
+                  marginHeight={0}
+                  marginWidth={0}
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${Number(longitude) - 0.005}%2C${Number(latitude) - 0.005}%2C${Number(longitude) + 0.005}%2C${Number(latitude) + 0.005}&layer=mapnik&marker=${latitude}%2C${longitude}`}
+                  className="rounded-2xl"
+                />
+                <a 
+                  href={mapUrl} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="absolute inset-0 z-10 block cursor-pointer group"
+                >
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <MapPin className="w-5 h-5 text-blue-600" />
+                      <span className="font-bold text-gray-900">Ouvrir dans Google Maps</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full bg-gradient-to-br from-gray-100 to-gray-200 text-center">
                 <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-lg">
                   <MapPin className="w-10 h-10 text-gray-400" />
                 </div>
-                {!hasValidCoordinates ? (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                      Coordonnées non disponibles
-                    </h3>
-                    <p className="text-gray-500">
-                      La localisation exacte n'est pas disponible pour cette
-                      propriété.
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                      Configuration requise
-                    </h3>
-                    <p className="text-gray-500 mb-1">
-                      Clé API Google Maps non configurée.
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Ajoutez VITE_GOOGLE_MAPS_API_KEY dans le fichier .env
-                    </p>
-                  </div>
-                )}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    Coordonnées non disponibles
+                  </h3>
+                  <p className="text-gray-500">
+                    La localisation exacte n'est pas disponible pour cette propriété.
+                  </p>
+                </div>
               </div>
             )}
           </div>

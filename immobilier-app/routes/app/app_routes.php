@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get("/charges", [HostChargeController::class, "index"]);
         Route::post("/charges", [HostChargeController::class, "store"]);
         Route::post("/charges/{id}/validate", [HostChargeController::class, "validate"]);
+        Route::post("/charges/{id}/cancel", [HostChargeController::class, "cancel"]);
         Route::get("/scheduled_charges", [HostScheduledChargeController::class, "index"]);
         Route::post("/scheduled_charges", [HostScheduledChargeController::class, "store"]);
 

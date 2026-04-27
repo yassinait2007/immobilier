@@ -9,7 +9,7 @@ import { KeyRound, AlertCircle, ArrowLeft } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const OtpForm: React.FC = () => {
-  const { verifyOtp } = useAuth();
+  const { verifyOtp, emailForReset } = useAuth();
   const { openAuthModal } = useAuthModal();
   const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const OtpForm: React.FC = () => {
       return;
     }
     try {
-      await verifyOtp(otp, ""); // You may want to pass email if needed
+      await verifyOtp(otp);
       openAuthModal("resetPassword");
     } catch (err: any) {
       setError(err.message || "Code OTP invalide");
@@ -67,7 +67,8 @@ const OtpForm: React.FC = () => {
             />
           </div>
           <p className="text-xs text-gray-500 text-center">
-            Entrez le code à 5 chiffres reçu par email
+            Entrez le code à 5 chiffres reçu à l'adresse <br/>
+            <span className="font-semibold text-gray-700">{emailForReset}</span>
           </p>
         </div>
 

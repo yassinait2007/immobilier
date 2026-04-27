@@ -39,7 +39,6 @@ export const DocumentsSection: React.FC<DocumentsSectionProps> = ({
                 onChange={(e) => onFileChange(e, key as keyof FileTypes)}
                 className="hidden"
                 id={key}
-                required
               />
               <label
                 htmlFor={key}

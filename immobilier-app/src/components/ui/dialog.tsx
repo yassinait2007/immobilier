@@ -157,12 +157,25 @@ const DialogFooter = React.forwardRef<
 ))
 DialogFooter.displayName = "DialogFooter"
 
+const DialogDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={`text-sm text-gray-500 ${className || ''}`}
+    {...props}
+  />
+))
+DialogDescription.displayName = "DialogDescription"
+
 export {
   Dialog,
   DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogClose,
   DialogBody,
   DialogFooter,

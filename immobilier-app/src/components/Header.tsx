@@ -20,6 +20,7 @@ import { useAuth } from "../context/authentication/auth-context";
 
 import clsx from "clsx";
 import { useAuthModal } from "@/context/authentication/auth-modal-context";
+import { siteConfig } from "@/config/siteConfig";
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -122,9 +123,9 @@ const Header: React.FC = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center group">
               <img
-                src="/assets/logo-footer.png"
-                alt="Les Vacances d'Agadir"
-                className="h-12 transition-transform duration-300 group-hover:scale-105"
+                src={siteConfig.website.logo}
+                alt={siteConfig.website.name}
+                className="h-12 rounded-full transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
 

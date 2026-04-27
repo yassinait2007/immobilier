@@ -9,6 +9,10 @@ use App\Models\RealstateReviewStatus;
 use App\Models\RealstateStatus;
 use App\utils\JsonResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PropertyAcceptedMail;
+use App\Mail\PropertyRefusedMail;
+
 
 class AnounceController extends Controller
 {
@@ -33,7 +37,11 @@ class AnounceController extends Controller
             "status_id" => $status->id,
             "review_status_id" => $reviewStatus->id
         ]);
+        
+        Mail::to($anounce->host->email)->send(new PropertyRefusedMail($anounce));
+
         $response = new RealestateResource($anounce->fresh());
+
         return $this->successResponse($response);
     }
 
@@ -46,7 +54,11 @@ class AnounceController extends Controller
             "status_id" => $status->id,
             "review_status_id" => $reviewStatus->id
         ]);
+
+        Mail::to($anounce->host->email)->send(new PropertyAcceptedMail($anounce));
+
         $response = new RealestateResource($anounce->fresh());
+
         return $this->successResponse($response);
     }
 }

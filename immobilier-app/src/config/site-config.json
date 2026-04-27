@@ -1,12 +1,12 @@
 {
   "website": {
-    "name": "Les Vacances d'Agadir",
-    "title": "Les Vacances d'Agadir - Location de vacances à Agadir",
-    "description": "Découvrez les meilleures propriétés de vacances à Agadir. Locations courtes et longues durées dans un cadre exceptionnel.",
-    "logo": "/assets/logo-footer.png"
+    "name": "Crystalimmo Agadir",
+    "title": "Crystalimmo Agadir - Agence immobilière",
+    "description": "Découvrez les meilleures propriétés à Agadir. Locations courtes et longues durées dans un cadre exceptionnel.",
+    "logo": "/assets/logo-crystal.png"
   },
   "contact": {
-    "email": "contact@lesvacanceagadir.com",
+    "email": "contact@crystalimmoagadir.com",
     "phone": "+212 5 55 55 55 55",
     "whatsapp": "+212 6 66 66 66 66",
     "address": {
@@ -22,15 +22,15 @@
   },
   "socialMedia": {
     "facebook": {
-      "handle": "@lesvacancesagadir",
+      "handle": "@crystalimmoagadir",
       "url": "https://facebook.com/lesvacancesagadir"
     },
     "instagram": {
-      "handle": "@lesvacancesagadir",
+      "handle": "@crystalimmoagadir",
       "url": "https://instagram.com/lesvacancesagadir"
     },
     "tiktok": {
-      "handle": "@lesvacancesagadir",
+      "handle": "@crystalimmoagadir",
       "url": "https://tiktok.com/@lesvacancesagadir"
     },
     "whatsapp": {

@@ -60,6 +60,7 @@ Route::group(["middleware" => ["auth:sanctum,managers"]], function () {
     Route::resource("contracts", ContractsController::class);
     Route::resource("charges", ChargeController::class);
     Route::post("charges/{id}/validate", [ChargeController::class, "validateCharge"]);
+    Route::post("charges/{id}/cancel", [ChargeController::class, "cancelCharge"]);
     Route::resource("scheduled-charges", ScheduledChargeController::class);
     Route::get("/stats", [StatistiquesController::class, "stats"]);
     Route::get("/global-stats", [StatistiquesController::class, "globalStats"]);
@@ -71,6 +72,11 @@ Route::group(["middleware" => ["auth:sanctum,managers"]], function () {
     Route::patch("/anounces/{id}/accept", [AnounceController::class, "acceptAnounce"]);
     Route::patch("/anounces/{id}/refuse", [AnounceController::class, "refuseAnounce"]);
     Route::resource("rapports", RapportController::class);
+
+    Route::get("/host-applications", [\App\Http\Controllers\dashboard\HostApplicationController::class, "index"]);
+    Route::patch("/host-applications/{id}/accept", [\App\Http\Controllers\dashboard\HostApplicationController::class, "accept"]);
+    Route::patch("/host-applications/{id}/refuse", [\App\Http\Controllers\dashboard\HostApplicationController::class, "refuse"]);
+
 
     Route::patch("/realestates/{id}/confirm-depart", [RealestateController::class, "confirmDepart"]);
     Route::patch("/realestates/{id}/confirm-checkin", [RealestateController::class, "confirmCheckin"]);

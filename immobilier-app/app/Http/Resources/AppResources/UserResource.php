@@ -51,7 +51,7 @@ class UserResource extends JsonResource
         if ($this->token) {
             $data["accessToken"] = $this->token;
         }
-        if ($this->type->code = "host") {
+        if ($this->type->code == "host" || $this->identity_status != null) {
             $data["identityStatus"] = $this->identity_status;
             $data["rib"] = $this->rib;
         }

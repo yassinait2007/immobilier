@@ -568,7 +568,7 @@ class RealestateController extends Controller
 
 
 
-    public function delete(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         $realestate = Realstate::where("id", "=", $id)->first();
         $realestate->is_deleted = 1;

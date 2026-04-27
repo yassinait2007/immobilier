@@ -87,4 +87,23 @@ class HostChargeController extends Controller
 
         return $this->jsonResponse(true, self::SUCCESS, 200, new ChargeResource($charge));
     }
+
+    public function cancel(Request $request, $id)
+    {
+        $user = $request->user();
+        $charge = Charge::where("id", $id)
+            ->whereHas("realestate", function ($query) use ($user) {
+                $query->where("host_id", $user->id);
+            })
+            ->first();
+
+        if (!$charge) {
+            return $this->jsonResponse(false, self::NOT_FOUND, 404, null);
+        }
+
+        $charge->status = 'cancelled';
+        $charge->save();
+
+        return $this->jsonResponse(true, self::SUCCESS, 200, new ChargeResource($charge));
+    }
 }

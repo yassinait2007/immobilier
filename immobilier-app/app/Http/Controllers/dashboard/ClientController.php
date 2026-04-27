@@ -44,7 +44,7 @@ class ClientController extends Controller
         $data = $validator->validated();
         $data["first_name"] = $data["firstName"];
         $data["last_name"] = $data["lastName"];
-        $data["email"] = isset($data["email"]) ? $data["email"] : $data["firstName"] . $data["lastName"] . time() . "@gmail.com";
+        $data["email"] = isset($data["email"]) ? $data["email"] : $data["firstName"] . $data["lastName"] . time() . "@crystalimmoagadir.com";
         $data["password"] = Hash::make($data["firstName"] . $data["lastName"]);
 
         $type = UserType::where("code", "=", "client")->first();

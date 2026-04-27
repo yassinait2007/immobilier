@@ -33,9 +33,10 @@ class OtpMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Les Vacances D'agadir",
+            subject: "Crystalimmo Agadir - Code OTP",
         );
     }
+
 
     /**
      * Get the message content definition.

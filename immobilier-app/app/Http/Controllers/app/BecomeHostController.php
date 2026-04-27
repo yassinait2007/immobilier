@@ -30,9 +30,9 @@ class BecomeHostController extends Controller
             "city" => ["required", "exists:cities,id"],
             "address" => ["required", "min:4", "max:200"],
             "rib" => ["sometimes", "string", "size:24"],
-            "identityFront" => ["required", "image", 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            "identityBack" => ["required", "image", 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            "profile" => ["required", "image", 'mimes:jpeg,png,jpg', 'max:2048'],
+            "identityFront" => ["required", "image", 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            "identityBack" => ["required", "image", 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            "profile" => ["required", "image", 'mimes:jpeg,png,jpg,webp', 'max:2048'],
 
         ]);
         if ($validator->fails()) {
@@ -41,8 +41,11 @@ class BecomeHostController extends Controller
 
 
 
-        $hostType = UserType::where("code", "=", "host")->first();
-        $currentUser->type_id = $hostType->id;
+        // Do not change type_id yet, wait for admin validation
+        // $hostType = UserType::where("code", "=", "host")->first();
+        // $currentUser->type_id = $hostType->id;
+        
+        $currentUser->identity_status = "pending";
         $currentUser->address = $request->input("address");
         $currentUser->tel = $request->input("tel");
         $currentUser->city_id = $request->input("city");
@@ -62,6 +65,7 @@ class BecomeHostController extends Controller
             $currentUser->addMedia($request->file("identityBack"))->usingFileName("identity-back." . $ext)->toMediaCollection("identity_back");
         }
         $response = new UserResource($currentUser, null);
-        return $this->jsonResponse(true, self::SUCCESS, 200, $response);
+        return $this->jsonResponse(true, "Votre demande a été envoyée. Un administrateur va la valider bientôt.", 200, $response);
+
     }
 }

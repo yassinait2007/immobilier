@@ -81,7 +81,7 @@ class ChargeController extends Controller
         $charge = Charge::findOrFail($id);
         
         $validator = Validator::make($request->all(), [
-            "verification_document" => ["required", "file", "max:10240"], // Max 10MB
+            "verification_document" => ["nullable", "file", "max:10240"], // Max 10MB
         ]);
 
         if ($validator->fails()) {
@@ -96,6 +96,14 @@ class ChargeController extends Controller
         $charge->save();
 
         return $this->successResponse(new ChargeResource($charge), "Charge validée avec succès");
+    }
+
+    public function cancelCharge($id)
+    {
+        $charge = Charge::findOrFail($id);
+        $charge->status = 'cancelled';
+        $charge->save();
+        return $this->successResponse(new ChargeResource($charge), "Charge annulée avec succès");
     }
 
 

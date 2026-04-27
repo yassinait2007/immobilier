@@ -35,8 +35,7 @@ class StatistiquesController extends Controller
         })->whereBetween("created_at", [$dtFrom, $dtTo])
             ->where("realestate_id", $realestate)
             ->whereHas("status", function ($query) {
-                $query->where("code", "payed")
-                    ->orWhere("code", "completed");
+                $query->whereIn("code", ["payed", "completed", "confirmed"]);
             })->sum("amount");
 
         $totalRealworld = Booking::whereHas("type", function ($query) {
@@ -44,8 +43,7 @@ class StatistiquesController extends Controller
         })->whereBetween("created_at", [$dtFrom, $dtTo])
             ->where("realestate_id", $realestate)
             ->whereHas("status", function ($query) {
-                $query->where("code", "payed")
-                    ->orWhere("code", "completed");
+                $query->whereIn("code", ["payed", "completed", "confirmed"]);
             })->sum("amount");
 
         $format = $groupBy == "day" ? "%Y-%m-%d" : "%Y-%m";
@@ -54,8 +52,7 @@ class StatistiquesController extends Controller
         $resultsPlatform = Booking::select(DB::raw("DATE_FORMAT(created_at, '$format') as period"), DB::raw('SUM(amount) as total'))
             ->where('realestate_id', $realestate)
             ->whereHas('status', function ($query) {
-                $query->where('code', 'payed')
-                    ->orWhere("code", "completed");
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })->whereHas("type", function ($query) {
                 $query->where("code", "platform");
             })->whereBetween('created_at', [$dtFrom, $dtTo])
@@ -75,8 +72,7 @@ class StatistiquesController extends Controller
         $resultsRealworld = Booking::select(DB::raw("DATE_FORMAT(created_at, '$format') as period"), DB::raw('SUM(amount) as total'))
             ->where('realestate_id', $realestate)
             ->whereHas('status', function ($query) {
-                $query->where('code', 'payed')
-                    ->orWhere("code", "completed");
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })->whereHas("type", function ($query) {
                 $query->where("code", "realworld");
             })->whereBetween('created_at', [$dtFrom, $dtTo])
@@ -117,12 +113,8 @@ class StatistiquesController extends Controller
         $dtTo = Carbon::parse($to)->endOfDay();
 
         $resultsPlatform = Booking::select(DB::raw("DATE_FORMAT(created_at, '$format') as period"), DB::raw('SUM(amount) as total'))
-            ->whereHas('realestate.host', function ($query) {
-                $query->where("agence", true);
-            })
             ->whereHas('status', function ($query) {
-                $query->where('code', 'payed')
-                    ->orWhere("code", "completed");
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })->whereHas("type", function ($query) {
                 $query->where("code", "platform");
             })->whereBetween('created_at', [$dtFrom, $dtTo])
@@ -140,12 +132,8 @@ class StatistiquesController extends Controller
 
 
         $resultsRealworld = Booking::select(DB::raw("DATE_FORMAT(created_at, '$format') as period"), DB::raw('SUM(amount) as total'))
-            ->whereHas('realestate.host', function ($query) {
-                $query->where("agence", true);
-            })
             ->whereHas('status', function ($query) {
-                $query->where('code', 'payed')
-                    ->orWhere("code", "completed");
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })->whereHas("type", function ($query) {
                 $query->where("code", "realworld");
             })->whereBetween('created_at', [$dtFrom, $dtTo])
@@ -178,11 +166,8 @@ class StatistiquesController extends Controller
             );
 
         //kpis
-        $totalPlatform = Booking::whereHas('realestate.host', function ($query) {
-            $query->where("agence", true);
-        })
-            ->whereHas('status', function ($query) {
-                $query->whereIn('code', ['payed', 'completed']);
+        $totalPlatform = Booking::whereHas('status', function ($query) {
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })
             ->whereHas('type', function ($query) {
                 $query->where("code", "platform");
@@ -190,11 +175,8 @@ class StatistiquesController extends Controller
             ->whereBetween('created_at', [$dtFrom, $dtTo])
             ->sum('amount');
 
-        $totalRealworld = Booking::whereHas('realestate.host', function ($query) {
-            $query->where("agence", true);
-        })
-            ->whereHas('status', function ($query) {
-                $query->whereIn('code', ['payed', 'completed']);
+        $totalRealworld = Booking::whereHas('status', function ($query) {
+                $query->whereIn('code', ['payed', 'completed', 'confirmed']);
             })
             ->whereHas('type', function ($query) {
                 $query->where("code", "realworld");

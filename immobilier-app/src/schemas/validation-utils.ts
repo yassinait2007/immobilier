@@ -3,11 +3,13 @@ import { z } from 'zod';
 /**
  * Utility to format Zod validation errors for form display
  */
-export const formatZodErrors = (error: z.ZodError): Record<string, string> => {
+export const formatZodErrors = (error: z.ZodError | any): Record<string, string> => {
   const formattedErrors: Record<string, string> = {};
   
-  error.errors.forEach((err) => {
-    const path = err.path.join('.');
+  const issues = error.issues || error.errors || [];
+  
+  issues.forEach((err: any) => {
+    const path = err.path ? err.path.join('.') : 'general';
     formattedErrors[path] = err.message;
   });
   

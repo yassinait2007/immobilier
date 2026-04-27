@@ -217,4 +217,4 @@ export const HostSpacePage = () => {
 };
 
 export { AddPropertyPage } from './AddPropertyPage';
-export const EditPropertyPage = () => <HostSpacePage />;
+export { EditPropertyPage } from './EditPropertyPage';

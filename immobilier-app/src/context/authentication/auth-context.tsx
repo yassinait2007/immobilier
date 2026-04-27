@@ -32,12 +32,13 @@ interface AuthContextType {
   ) => Promise<void>;
   logout: () => void;
   forgotPassword: (email: string) => Promise<any>;
-  resetPassword: (password: string, token: string) => Promise<any>;
-  verifyOtp: (otp: string, email: string) => Promise<any>;
+  resetPassword: (password: string) => Promise<any>;
+  verifyOtp: (otp: string) => Promise<any>;
   clearError: () => void;
   isAuthenticated: boolean;
   updateUser: (userData: User) => void;
   refreshUser: () => Promise<void>;
+  emailForReset: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -66,6 +67,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     initialState.isAuthenticated
   );
+  const [emailForReset, setEmailForReset] = useState<string | null>(null);
+  const [resetToken, setResetToken] = useState<string | null>(null);
 
   useLayoutEffect(() => {
     const verifyAuthentication = async () => {
@@ -168,6 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       const res = await forgotPasswordRequest(email);
+      setEmailForReset(email);
       return res.data;
     } catch (err: any) {
       const message = handleAuthError(err);
@@ -178,11 +182,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const resetPassword = async (password: string, token: string) => {
+  const resetPassword = async (password: string) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await resetPasswordRequest(password, token);
+      if (!resetToken) throw new Error("Reset token missing");
+      const res = await resetPasswordRequest(password, resetToken);
+      setEmailForReset(null);
+      setResetToken(null);
       return res.data;
     } catch (err: any) {
       const message = handleAuthError(err);
@@ -193,12 +200,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const verifyOtp = async (otp: string, email: string) => {
+  const verifyOtp = async (otp: string) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await verifyOtpRequest(otp, email);
-      return res.data;
+      if (!emailForReset) throw new Error("Email for reset missing");
+      const res = await verifyOtpRequest(otp, emailForReset);
+      const data = res.data;
+      if (data.success && data.data?.accessToken) {
+        setResetToken(data.data.accessToken);
+      }
+      return data;
     } catch (err: any) {
       const message = handleAuthError(err);
       setError(message);
@@ -242,6 +254,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         updateUser,
         refreshUser,
+        emailForReset,
       }}
     >
       {children}
